@@ -1,0 +1,56 @@
+<!--
+
+iHanói
+http://www.usp.br/line
+
+Uso: localhost/ihanoi/index.html?n=3&lang=pt
+@TODO ainda nao implementado multi-lingua
+
+Leônidas de Oliveira Brandão
+v0: 2020/07/28
+
+-->
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>iHanói - Problema das Torres de Hanói</title>
+  <link rel="stylesheet" href="css/ihanoi_style.css" />
+ </head>
+
+<body onload="listaURL(); desenhaTudo();">
+
+<!-- Importante usar estilo para NAO apresentar: style="display:none; -->
+<img id="fundo" style="display:none;" src="img/img_fundo_hanoi.png" />
+<img id="haste0" style="display:none;" src="img/hasteA.png" />
+<img id="haste1" style="display:none;" src="img/hasteB.png" />
+<img id="haste2" style="display:none;" src="img/hasteC.png" />
+<img id="disco0" style="display:none;" src="img/disk1.png" />
+<img id="disco1" style="display:none;" src="img/disk2.png" />
+<img id="disco2" style="display:none;" src="img/disk3.png" />
+<img id="disco3" style="display:none;" src="img/disk4.png" />
+<img id="disco4" style="display:none;" src="img/disk5.png" />
+<img id="disco5" style="display:none;" src="img/disk6.png" />
+
+<!-- Carregar codigos JavaScript -->
+<script src="js/ihanoi.js"></script><!-- Carregar codigo do iMA iHanoi - JavaScript -->
+<script src="js/integration-functions.js"></script><!-- integrador do iMA como o iTarefa/Moodle - JavaScript -->
+
+<!-- Botoes auxiliares para iHanoir: redefinir, rever, 1 disco, ... -->
+<div class="fundoBotao tableBotoes">
+ <div class="tableBotoes-celula tableBotoes-tar">
+ <button id="reiniciar" class="classeBotao classeBotaoR" title="Reiniciar na configuração de partida" onclick="reiniciar();">Reiniciar</button> &nbsp;
+ <button id="rever"     class="classeBotao classeBotaoR" title="Rever os movimento - clique aqui para cada movimento" onclick="rever();">Rever</button>
+ &nbsp;&nbsp;&nbsp;&nbsp;
+ <button id="disco1" class="classeBotao classeBotao1" title="Apenas 1 disco"  onclick="reiniciar(1);">1 disco</button> &nbsp;
+ <button id="disco2" class="classeBotao classeBotao2" title="Apenas 2 discos" onclick="reiniciar(2);">2 discos</button> &nbsp;
+ <button id="disco3" class="classeBotao classeBotao3" title="Apenas 3 discos" onclick="reiniciar(3);">3 discos</button> &nbsp;
+ <button id="disco4" class="classeBotao classeBotao4" title="Apenas 4 discos" onclick="reiniciar(4);">4 discos</button> &nbsp;
+ <button id="disco5" class="classeBotao classeBotao5" title="Apenas 5 discos" onclick="reiniciar(5);">5 discos</button> &nbsp;
+ <button id="disco6" class="classeBotao classeBotao6" title="Apenas 6 discos" onclick="reiniciar(6);">6 discos</button> &nbsp;
+ </div>
+</div>
+
+</body>
+</html>

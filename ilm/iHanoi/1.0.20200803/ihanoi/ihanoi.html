@@ -1,0 +1,52 @@
+<!--
+
+iHanói
+http://www.usp.br/line
+
+Uso: localhost/ihanoi/index.html?n=3&lang=pt
+@TODO ainda nao implementado multi-lingua
+
+Leônidas de Oliveira Brandão
+v0: 2020/07/28
+
+-->
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>iHanói - Problema das Torres de Hanói</title>
+  <style>
+    body { margin: 0; overflow: hidden; font-family:sans; }
+    foot { font-size:.8cm; }
+    canvas { padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+    .botoes { margin:0 auto; width: 1100px; background:url("img/sky.png"); }
+    /* align-items:center; vertical-align:middle; position:center;  align-items: center;
+       display: block; display: flex; vertical-align: middle; position:middle; float:center;  */
+  </style>
+ </head>
+
+<body onload="listaURL(); desenhaTudo();">
+
+<img id="html5" style="display:none;" src="img/sky.png" />
+<img id="fundo" style="display:none;" src="img/sky.png" />
+<img id="haste0" style="display:none;" src="img/hasteA.png" />
+<img id="haste1" style="display:none;" src="img/hasteB.png" />
+<img id="haste2" style="display:none;" src="img/hasteC.png" />
+<img id="disco5" style="display:none;" src="img/disk6.png" />
+<img id="disco4" style="display:none;" src="img/disk5.png" />
+<img id="disco3" style="display:none;" src="img/disk4.png" />
+<img id="disco2" style="display:none;" src="img/disk3.png" />
+<img id="disco1" style="display:none;" src="img/disk2.png" />
+<img id="disco0" style="display:none;" src="img/disk1.png" />
+
+<script src="js/ihanoi.js"></script>
+
+<script src="js/integration-functions.js"></script>
+
+<div class="botoes">
+ <button id="reiniciar" class="classeBotao" onclick="reiniciar();">Reiniciar</button>   
+</div>
+
+</body>
+</html>

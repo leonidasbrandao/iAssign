@@ -1,0 +1,82 @@
+Prontos:
+
+	1. iTarefa
+
+  - sobrescrita dos arquivos enviados pelo professor Leo (iassign_alteracoes_2020_12_28.tgz)
+
+  TODO: na instalacao/atualizacao, mudar 'assign_ilm.file_jar' o INDEX (mudar "update" e "install")
+  -> Removido o INDEX para o campo file_jar no install.xml
+  -> Adicionado o campo no upgrade.php: $DB->execute("ALTER TABLE {iassign_ilm} DROP INDEX {iassilm_fil_uix}");
+
+  CAMPO: 'iassing_statement.filesid':
+  -> adicinada uma nova entrada ao arquivo install.xml para o campo 'iassing_statement.filesid'
+
+  upgrade: criar campo 'iassing_statement.filesid' (='files.id') - ja esta no cod que passei
+  -> criar o campo 'iassing_ilm.filesid' e para todos os registros existentes na tabela, fazer uma cópia dos valores do iassing_statement.file
+
+* obs: Igor usou: 'iassing_ilm.filesid' (voce usou 'iassing_ilm.files' no 'upgrade')
+  Revisar no codigo para usar 'iassing_statement.filesid'
+
+  * Acertos relatorio: Igor vai procurar as alteracoes que ja' tinha resolvido (tabela HTML)
+  --> Não encontrei essa modificação, que já havia implementado e compartilhado.
+
+* Erros do form do editor de iMA ./mod/iassign/settings_ilm.php
+  --> Não consegui reproduzir o erro
+
+
+ * Remover qualquer referencia a sitios externos:
+      -- cdn.jsdelivr.net: /var/www/html/moo391p/filter/mathjaxloader/settings.php //line
+      criar diretorio: /var/www/html/saw/copias_locais/
+
+  --> Por se tratarem de bibliotecas que o Moodle e outros plugins utilizam, não alterei localmente, pois não surtiriam efeito em nossa versão de produção. A se pensar para o futuro.
+
+Fazendo:
+
+
+
+
+Afazeres:
+
+  
+2. MConf/Elo
+3. Moodle 3.10+
+
+4. Cursos Verao
+Patricia
+Rafael Antonio Cosentino
+Thiago Silveira (esta na Alemanha)
+
+5. Materiais de cursos
+- Meus materiais: https://www.ime.usp.br/~leo/intr_prog/ 
+    --> para carregar página interna (iframe) remover o 
+- Instruções de como usar o MCONF: https://docs.atp.usp.br/artigos/mconf/
+- Instruções de como VPL: colocar na coluna 3 do "docs"
+- Produzir um texto sobre importancia de resolver (o mais) sozinho (possivel) cada exercicio
+- Estrutura do curso no Moodle:
+    -- Bloco: Motivação: histórias e aplicações (uma página Web Moodle com apontadores para nosssas paginas aberta, estilo "www.ime.usp.br/~leo/intr_prog/ ")
+    -- Bloco: Tópicos: tipos de algoritmos, técnicas de programação
+    -- Bloco: Exercícios iVProg/VPL base e desafios + questionario likert para cada questao (dificuldade)
+ - Avaliacao: 24H exercicios iVProg/VPL + questionario
+
+Objetivos
+Sobre a importância de resolver (o máximo possível) sozinho cada exercício
+Existe muitos trabalhos que comprovam a necessidade do aprendiz empregar esforço individual em problemas/exercícios para conseguir alcançar o entendimento. Lembre-se da metáfora do exercício físico (pipoca+sofá x praticar+forma)
+Isso é particularmente mais importante em Introdução à Programação. É essencial tentar resolver problemas "novos" (muito diferentes daqueles que já resolveu antes). Procure quebrar o problema (https://pt.wikipedia.org/wiki/Divis%C3%A3o_e_conquista), resolver casos particulares (https://pt.wikipedia.org/wiki/M%C3%A9todo_indutivo), testar manualmente (minha apostila), para depois ir visualizando o algoritmo.
+Com o tempo adiquirirá base para reconhecer onde cada técnica de programação poderá ajudar a resolver o problema.
+
+Para isso sugerimos adotar o seguinte "algoritmo":
+1. Tentar resolver sozinho.
+2. Se não conseguiu depois de X minuntos
+3. Então tente explicar para monitor/professor/colega sua dificuldade (e.g. o que pensou)
+               a partir dai o monitor/professor/colega poderá lhe dar alguma dica
+4.           Volte ao passo 1
+
+
+
+
+
+
+
+
+
+

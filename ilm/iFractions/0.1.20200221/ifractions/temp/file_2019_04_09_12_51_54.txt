@@ -1,0 +1,5 @@
+nome=name=
+INSERT INTO 'ifractions'
+(s_hostip, s_playername, s_datetime, s_lang, s_game, s_mode, s_operator, s_level, s_mappos, s_result, s_time, s_details)
+VALUES
+( '::1; localhost', '', '2019-04-09 12:51:54', 'pt', 'Square', 'A', 'Plus', 1, 1, 'true', 4, 'numBlocks:4, valBlocks: 1,1,1,1, blockIndex: 3, floorIndex: 3')

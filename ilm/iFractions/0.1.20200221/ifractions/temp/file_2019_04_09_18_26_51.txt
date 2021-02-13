@@ -1,0 +1,6 @@
+nome=Leônidas de Oliveira Brandão, name=, username=
+INSERT INTO ifractions
+(s_hostip, s_playername, s_datetime, s_lang, s_game, s_mode, s_operator, s_level, s_mappos, s_result, s_time, s_details)
+VALUES
+('::1; localhost', 'LeYEnidas de Oliveira BrandYeo', '2019-04-09 18:26:51', 'pt_BR', 'Square', 'A', 'Plus', 1, 1, 'true', 4, 'numBlocks:4, valBlocks: 1,1,1,1, blockIndex: 3, floorIndex: 3')
+Resultado: 

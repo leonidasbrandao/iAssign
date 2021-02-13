@@ -1,0 +1,7 @@
+nome=Leônidas de Oliveira Brandão, name=, username=
+INSERT INTO 'ifractions'
+(s_hostip, s_playername, s_datetime, s_lang, s_game, s_mode, s_operator, s_level, s_mappos, s_result, s_time, s_details)
+VALUES
+('::1; localhost', 'LeYEnidas de Oliveira BrandYeo', '2019-04-09 17:27:05', 'undefined', 'Square', 'A', 'Plus', 1, 1, 'true', 5, 'numBlocks:5, valBlocks: 1,1,1,1,1, blockIndex: 4, floorIndex: 4')
+Resultado: Erro: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''ifractions'
+(s_hostip, s_playername, s_datetime, s_lang, s_game, s_mode, s_oper' at line 1

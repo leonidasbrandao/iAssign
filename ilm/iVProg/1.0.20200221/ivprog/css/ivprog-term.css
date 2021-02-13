@@ -1,0 +1,208 @@
+.ivprog-term-div {
+  /* background-color: black; */
+  width: 100%;
+  height: 12rem;
+  overflow-y: scroll;
+}
+
+#ivprog-term-div {
+  z-index: 10;
+}
+
+.ivprog-term-userText {
+  white-space: pre;
+  height: 1.6rem;
+}
+
+.ivprog-term-userText, .ivprog-term-userInput {
+  color: #f2d6d6;
+  height: 1.6rem;
+}
+
+.ivprog-term-info {
+  color: #28a628;
+  height: 1.6rem;
+}
+
+.ivprog-term-error {
+  color: #df4242;
+  height: 1.6rem;
+}
+
+.ivprog-term-input {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 500;
+  background-color: inherit;
+  border: 0;
+  color: white;
+}
+
+.ivprog-term-div > .ivprog-term-input, .ivprog-term-div > .ivprog-term-userText,
+.ivprog-term-div > .ivprog-term-info, .ivprog-term-div, .ivprog-term-error {
+  padding-left: 20px;
+}
+
+#ivprog-term {
+  /* border: 1px solid gray;
+  background: black;
+  margin-top: -30px;
+  position: relative;
+  padding: 5px;
+  z-index: 999; */
+}
+/* #ivprog-term i {
+  margin-left: 5px;
+  cursor: pointer;
+} */
+.div_toggle_console {
+  cursor: pointer;
+}
+.ivprog-term-active {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1) !important;
+  border: 3px solid rgba(81, 203, 238, 1) !important;
+}
+
+.ivprog-term-div {
+  overflow:scroll;
+}
+
+.ivprog-term-div::-webkit-scrollbar {
+    width: 12px;
+}
+
+.ivprog-term-div::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.ivprog-term-div::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: green;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+/**novas regras bash*/
+#ivprog-terminal-inputdiv {
+  padding-left: 12px;
+}
+#ivprog-console-clearbtn, #ivprog-console-showbtn, #ivprog-console-hidebtn {
+  cursor: pointer;
+}
+
+.bash {
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  border-radius: 3px;
+  font-family: "Andale Mono", Consolas, "Courier New" !important;
+}
+
+.bash-title {
+  text-align: center;
+  color: #525252;
+  padding: 5px 0;
+  margin: 0;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+  font-size: 0.85em;
+  border: 1px solid #CCCCCC;
+  border-bottom: none;
+
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+
+  background: #f7f7f7; /* Old browsers */
+  background: linear-gradient(to bottom,  #f7f7f7 0%,#B8B8B8 100%); /* W3C */
+}
+
+.bash-body {
+  /* margin: 0;
+  padding: 5px; */
+  background: #111010;
+  /* list-style: none; */
+  color: #F8F8FF;
+
+  font: 14px 'Andale Mono', Consolas, 'Courier New';
+  line-height: 1.6em;
+  border: 1px solid #CCCCCC;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.bash-text {
+  font: 14px 'Andale Mono', Consolas, 'Courier New';
+  line-height: 1.6em;
+}
+
+.bash-highlight {
+  color: #45D40C;
+}
+
+.bash-highlight a {
+  color: #45D40C;
+  text-decoration: underline;
+}
+
+/* .bash-body li:before {
+  content: '$';
+  color: #F8F8FF;
+  position: absolute;
+  left: 0;
+  top: 0;
+} */
+
+.bash-body i {
+  cursor: text;
+}
+
+.bash-body li {
+  word-wrap: break-word;
+  position: relative;
+  padding: 0 0 0 15px;
+}
+
+#cmd {
+  font-family: courier;
+  font-size: 14px;
+  line-height: normal;
+  background:inherit;
+  color: #21f838;
+  padding: 5px;
+  overflow: hidden;
+}
+#cmd span {
+  float: left;
+  padding-left: 3px;
+  white-space: pre;
+}
+#cursor {
+  float: left;
+  width: 5px;
+  height: 14px;
+  background: #21f838;
+}
+#cmd ~ input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.ivprog-term-error > span > ul {
+  margin:0 !important;
+}
+
+.ivprog-term-error > span > ul > li {
+  padding: 0;
+  margin: 0;
+  line-height: 1rem;
+}
+
+.assessment-div-detail:hover {
+  cursor: pointer;
+}
+.assessment-div-detail:hover > span {
+  text-decoration: underline;
+}
+
+.bash span {
+  font-family: 'Courier New', Courier, monospace;
+}

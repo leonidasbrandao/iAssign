@@ -1,0 +1,11 @@
+iAssign by Laboratory of Informatics in Education (LInE)
+http://line.ime.usp.br
+
+This directory can be used by developers to debug new iLM.
+
+In './mod/iassign/ilm_security.php', it must be set $DEBUG = 1;
+
+Data related to any call to the iLM is registered as './mod/iassign/ilm_debug/YYYY_mm_dd_m_s_int'.
+
+---
+L.O.B.

@@ -1,0 +1,121 @@
+@font-face {
+  font-family: 'NimbusSanLConRegular';
+  src: url(fonts/NimbusSanLConRegular.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NimbusSanLConBold';
+  src: url(fonts/NimbusSanLConBold.ttf) format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TeXGyreHerosRegular';
+  src: url(fonts/texgyreheros-regular.otf) format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-family: 'TeXGyreHerosRegular';
+  background-color: #b9c7ca;
+  margin-left: 2rem;
+}
+.details-body > .details-header > h2 {margin-bottom: 0.5rem;}
+.details-body > .details-header > p {
+  padding-left: 1rem;
+  margin: 0;
+}
+table td { font-size: 14pt;}
+.stringdiff-delete, .stringdiff-insert {font-weight: bold;}
+.stringdiff-insert, .assessment-input-read {color: #22a222}
+.stringdiff-delete {
+  text-decoration: line-through;
+  color: #d02929
+}
+.details-body h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.detaisl-div-table {
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+.assessment-output-table {
+  border-collapse: collapse;
+  border-style: hidden;
+}
+.assessment-output-table tr:nth-child(odd) {background: #CCC}
+.assessment-output-table tr:nth-child(even) {background: #f7f2c9}
+.assessment-output-table tr > th {
+  background-color: #000;
+  color: #fff;
+  font-family: 'NimbusSansLBoldCond';
+  font-weight: bold;
+  font-style: normal; 
+  letter-spacing: .05rem;
+}
+.assessment-output-table td, .assessment-output-table th {
+  border-left: 1px solid black;
+  padding: 0.5rem;
+  text-align: center;
+  max-width: 16rem;
+  font-family: 'NimbusSanLConRegular';
+  vertical-align: middle;
+  letter-spacing: .05rem;
+}
+.assessment-string-expected, .assessment-string-generated, .assessment-string-diff {text-align: left;}
+p.assessment-failed-execution {padding-left: 1rem;}
+.assessment-failed-case {
+  color:#FF1212;
+  padding-right: 1rem;
+}
+.assessment-input-unread {color: #d02929}
+.assessment-number-result-failed, .assessment-bool-result-failed {color: #d02929}
+.assessment-number-result, .assessment-bool-result, .assessment-string-result {color: #22a222}
+.assessment-popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.assessment-popup .assessment-popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+.assessment-popup .assessment-popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+.assessment-popup:hover .assessment-popuptext {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+.assessment-empty-output {
+  height: 1.5rem;
+  width: 1.5rem;
+}

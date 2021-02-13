@@ -1,0 +1,58 @@
+/*
+ LInE (Laboratory of Informatics in Education) - http://www.usp.br/line
+ IME - USP
+ iHanoi - http://www.matematica.br/ihanoi
+ Material didático
+ Pode usar livrevemente este material para fins não comerciais, devendo sempre fazer referência à autoria.
+ Prof. Leônidas de Oliveira Brandão
+ http://www.ime.usp.br/~leo
+ http://line.ime.usp.br
+ http://www.matemtica.br
+ */
+
+body { margin: 10; overflow: hidden; font-family:sans; }
+foot { font-size:.8cm; }
+canvas { padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+.fundoBotao { margin:0 auto; width: 1100px; background:url("../img/fundo1.png"); }
+.classeBotao1 {
+  display: inline-block; background-color: #7b38d8; border-radius: 10px; border: 4px double #cccccc; color: #eeeeee; text-align: center; font-size: 12px; padding: 5px;
+  width: 100px; -webkit-transition: all 0.5s; -moz-transition: all 0.5s; -o-transition: all 0.5s; transition: all 0.5s; cursor: pointer; margin: 2px; }
+
+/*
+ disk1: 3399ff 0066cc
+ disk2: cc66ff 9933ff
+ disk3: e4ee26 cdd711
+ disk4: 29eb46 11b92b
+ disk5: 990099 330033
+ disk6: ff6666 cc0000
+*/
+.tableBotoes { display:table; }
+.tableBotoes-celula { display:table-cell; }
+.tableBotoes-tar { text-align: left; }
+
+.classeBotaoR { background-color: #5566cc; width: 100px; }
+
+.classeBotao { display: inline-block; border-radius: 10px; border: 4px double #cccccc; color: #eeeeee; text-align: center;
+  font-size: 12px; padding: 5px; transition: all 0.5s; cursor: pointer; margin: 2px; }
+.classeBotao span { cursor: pointer; display: inline-block; position: relative; transition: 0.5s; }
+.classeBotao span:after { content: '\00bb'; position: absolute; opacity: 0; top: 0; right: -20px; transition: 0.5s;}
+.classeBotao:hover span { padding-right: 25px;}
+.classeBotao:hover span:after { opacity: 1; right: 0; }
+
+.classeBotao1 { background-color: #0066cc; width: 80px; font-size:.7em; }
+.classeBotao1:hover { background-color: #3399ff; }
+
+.classeBotao2 { background-color: #9933ff; width: 80px; font-size:.7em; }
+.classeBotao2:hover { background-color: #cc66ff; }
+
+.classeBotao3 { color:#444444; border: 4px double #444444; background-color: #cdd711; width: 80px; font-size:.7em; }
+.classeBotao3:hover { background-color: #e4ee26; }
+
+.classeBotao4 { background-color: #11b92b; width: 80px; font-size:.7em; }
+.classeBotao4:hover { background-color: #29eb46; }
+
+.classeBotao5 { background-color: #330033; width: 80px; font-size:.7em; }
+.classeBotao5:hover { background-color: #990099; }
+
+.classeBotao6 { background-color: #cc0000; width: 80px; font-size:.7em; }
+.classeBotao6:hover { background-color: #ff6666; }

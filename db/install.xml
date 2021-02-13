@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<XMLDB PATH="mod/iassign/db" VERSION="20101022" COMMENT="XMLDB file for Moodle mod/iassign" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceScheiaLocation="../../../lib/xmldb/xmldb.xsd">
+  <TABLES>
+    <TABLE NAME="iassign_ilm" COMMENT="Info about Interactive Learning Module - iLM" NEXT= "iassign_ilm_config">
+      <FIELDS>
+        <FIELD NAME="id"             TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="true"                ENUM="false" COMMENT="Primary key of table"                                            NEXT="name"/>
+        <FIELD NAME="name"           TYPE="char" LENGTH="20"     NOTNULL="true"                 SEQUENCE="false"               ENUM="false" COMMENT="Name of the iLM"                         PREVIOUS="id"           NEXT="version"/>
+        <FIELD NAME="version"        TYPE="char" LENGTH="30"     NOTNULL="true"                 SEQUENCE="false"               ENUM="false" COMMENT="Version of the iLM"                      PREVIOUS="name"         NEXT="version"/>
+        <FIELD NAME="type"           TYPE="char" LENGTH="20"     NOTNULL="true"                 SEQUENCE="false"               ENUM="false" COMMENT="Type of the iLM"                         PREVIOUS="version"      NEXT="description"/>
+        <FIELD NAME="description"    TYPE="text" LENGTH="medium" NOTNULL="false"                SEQUENCE="false"               ENUM="false" COMMENT="Description of the iLM"                  PREVIOUS="type"         NEXT="url"/>
+        <FIELD NAME="url"            TYPE="text" LENGTH="small"  NOTNULL="false"                SEQUENCE="false"               ENUM="false" COMMENT="URL of iLM"                              PREVIOUS="description"  NEXT="extension"/>
+        <FIELD NAME="extension"      TYPE="char" LENGTH="30"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false"               ENUM="false" COMMENT="File extension iLM"                      PREVIOUS="url"          NEXT="parent"/>
+        <FIELD NAME="parent"         TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="id iLM parent. 0 - parent"               PREVIOUS="extension"    NEXT="file_jar"/>
+        <FIELD NAME="file_jar"       TYPE="char" LENGTH="255"    NOTNULL="true" UNSIGNED="true" SEQUENCE="false"               ENUM="false" COMMENT="File name JAR"                           PREVIOUS="parent"       NEXT="file_class"/>
+        <FIELD NAME="file_class"     TYPE="char" LENGTH="255"    NOTNULL="true" UNSIGNED="true" SEQUENCE="false"               ENUM="false" COMMENT="File name class"                         PREVIOUS="file_jar"     NEXT="width"/>
+        <FIELD NAME="width"          TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="800" ENUM="false" COMMENT="Width of area to display the iLM"        PREVIOUS="file_class"   NEXT="height"/>
+        <FIELD NAME="height"         TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="700" ENUM="false" COMMENT="Heigth of area to display the iLM"       PREVIOUS="width"        NEXT="enable"/>
+        <FIELD NAME="enable"         TYPE="int"  LENGTH="1"                     UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="Status iLM. 0 - disabled / 1 - enabled"  PREVIOUS="height"       NEXT="timemodified"/>
+        <FIELD NAME="timemodified"   TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="Date of last modification"               PREVIOUS="enable"       NEXT="author"/>
+        <FIELD NAME="author"         TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="id of the author of the iLM"             PREVIOUS="timemodified" NEXT="timecreated"/>
+        <FIELD NAME="timecreated"    TYPE="int"  LENGTH="10"     NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="Date of registration of iLM"             PREVIOUS="author"       NEXT="evaluate"/>
+        <FIELD NAME="evaluate"       TYPE="int"  LENGTH="1"                     UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="iLM has automatic evaluator? 0-no/1-yes" PREVIOUS="timecreated"  NEXT="reevaluate"/>
+        <FIELD NAME="reevaluate"     TYPE="int"  LENGTH="1"      NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="iLM has automatic reevaluator? 0-no/1-yes" PREVIOUS="timecreated"  NEXT="editingbehavior" />
+        <FIELD NAME="editingbehavior"     TYPE="int"  LENGTH="10"      NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="Activity editing behavior" PREVIOUS="reevaluate"  NEXT="submissionbehavior" />
+        <FIELD NAME="submissionbehavior"     TYPE="int"  LENGTH="10"      NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="0"   ENUM="false" COMMENT="Activity submission behavior" PREVIOUS="editingbehavior" NEXT="action_buttons" />
+        <FIELD NAME="action_buttons"     TYPE="int"  LENGTH="10"      NOTNULL="true" UNSIGNED="true" SEQUENCE="false" DEFAULT="1"   ENUM="false" COMMENT="iLM action buttons option - See doc for details" PREVIOUS="submissionbehavior" />
+      </FIELDS>
+      <KEYS>
+        <KEY   NAME="primary"        TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="name_version"   UNIQUE="true" FIELDS="name,version"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="iassign_ilm_config" COMMENT="Info about config iLM" PREVIOUS="iassign_ilm" NEXT= "iassign">
+      <FIELDS>
+        <FIELD NAME="id"             TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"             SEQUENCE="true"  ENUM="false"  COMMENT="Primary key of table"                                                                NEXT="iassign_ilmid"/>
+        <FIELD NAME="iassign_ilmid"  TYPE="int"  LENGTH="10"     NOTNULL="true"                              SEQUENCE="false" ENUM="false"  COMMENT="id iLM"                                                    PREVIOUS="id"             NEXT="param_type"/>
+        <FIELD NAME="param_type"     TYPE="char" LENGTH="100"    NOTNULL="true"  UNSIGNED="true"             SEQUENCE="false" ENUM="false"  COMMENT="Parameter type"                                            PREVIOUS="iassign_ilmid"  NEXT="param_name"/>
+        <FIELD NAME="param_name"     TYPE="char" LENGTH="100"    NOTNULL="true"  UNSIGNED="true"             SEQUENCE="false" ENUM="false"  COMMENT="Parameter name"                                            PREVIOUS="param_type"     NEXT="param_value"/>
+        <FIELD NAME="param_value"    TYPE="char" LENGTH="100"    NOTNULL="true"  UNSIGNED="true"             SEQUENCE="false" ENUM="false"  COMMENT="Parameter value"                                           PREVIOUS="param_name"     NEXT="description"/>
+        <FIELD NAME="description"    TYPE="text" LENGTH="medium" NOTNULL="false"                             SEQUENCE="false" ENUM="false"  COMMENT="Parameter description"                                     PREVIOUS="param_value"    NEXT="visible"/>
+        <FIELD NAME="visible"        TYPE="int"  LENGTH="1"      NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false"  COMMENT="Parameter visible in the editing activities? 0-no/1-yes"   PREVIOUS="description"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"          TYPE="primary" FIELDS="id"     NEXT="iassign_ilmid"/>
+        <KEY NAME="iassign_ilmid"    TYPE="foreign" FIELDS="iassign_ilmid" REFTABLE="iassign_ilm" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="iassign" COMMENT="Instances of the module iAssign" PREVIOUS="iassign_ilm_config" NEXT="iassign_log">
+      <FIELDS>
+        <FIELD NAME="id"             TYPE="int"  LENGTH="10"     NOTNULL="true"   UNSIGNED="true"                SEQUENCE="true"  ENUM="false" COMMENT="Primary key of table"                                                                                         NEXT="course"/>
+        <FIELD NAME="course"         TYPE="int"  LENGTH="10"     NOTNULL="true"   UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="id of the course in which the activity is inserted"                                 PREVIOUS="id"             NEXT="name"/>
+        <FIELD NAME="name"           TYPE="char" LENGTH="255"    NOTNULL="true"                                  SEQUENCE="false" ENUM="false" COMMENT="Name of the instance of activity"                                                   PREVIOUS="course"         NEXT="intro"/>
+        <FIELD NAME="intro"          TYPE="text"                 NOTNULL="false"                                 SEQUENCE="false" COMMENT="The description of the assignment. This field is used by feature MOD_INTRO."                     PREVIOUS="name"           NEXT="introformat"/>
+        <FIELD NAME="introformat"    TYPE="int"  LENGTH="4"      NOTNULL="true"                    DEFAULT="0"   SEQUENCE="false" COMMENT="The format of the description field of the assignment. This field is used by feature MOD_INTRO." PREVIOUS="intro"          NEXT="activity_group"/>
+        <FIELD NAME="activity_group" TYPE="int"  LENGTH="1"      NOTNULL="true"   UNSIGNED="true"  DEFAULT="1"   SEQUENCE="false" ENUM="false" COMMENT="Type grouping. 0-do not group / 1-group by type of activity"                        PREVIOUS="introformat"    NEXT="grade"/>
+        <FIELD NAME="grade"          TYPE="float"                NOTNULL="true"   UNSIGNED="false" DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Maximum score for activity"                                                         PREVIOUS="activity_group" NEXT="timeavailable"/>
+        <FIELD NAME="timeavailable"  TYPE="int"  LENGTH="10"     NOTNULL="true"   UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Date of opening activity"                                                           PREVIOUS="grade"          NEXT="timedue"/>
+        <FIELD NAME="timedue"        TYPE="int"  LENGTH="10"     NOTNULL="true"   UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Closing date of the activity"                                                       PREVIOUS="timeavailable"  NEXT="preventlate"/>
+        <FIELD NAME="preventlate"    TYPE="int"  LENGTH="2"      NOTNULL="false"  UNSIGNED="true"  DEFAULT="1"   SEQUENCE="false" ENUM="false" COMMENT="Allow sending late? 0 - no / 1 - yes"                                               PREVIOUS="timedue"        NEXT="test"/>
+        <FIELD NAME="test"           TYPE="int"  LENGTH="1"      NOTNULL="false"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Activity to release test after closing time? 0 - no / 1 - yes"                      PREVIOUS="preventlate"    NEXT="max_experiment"/>
+        <FIELD NAME="max_experiment" TYPE="int"  LENGTH="10"     NOTNULL="true"   UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Maximum number of attempts. 0 - unlimited"                                          PREVIOUS="test"/>
+      </FIELDS>
+      <KEYS>
+        <KEY   NAME="primary" TYPE="primary" FIELDS="id" />
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course"  UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="iassign_log" COMMENT="Logs of the module iAssign" PREVIOUS="iassign" NEXT="iassign_statement">
+      <FIELDS>
+        <FIELD NAME="id"           TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"                SEQUENCE="true"  ENUM="false" COMMENT="Primary key of table"                                                  NEXT="time"/>
+        <FIELD NAME="time"         TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Date of log activity"                            PREVIOUS="id"         NEXT="userid"/>
+        <FIELD NAME="userid"       TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Id of active user"                               PREVIOUS="time"       NEXT="ip"/>
+        <FIELD NAME="ip"           TYPE="char" LENGTH="255"    NOTNULL="true"                                 SEQUENCE="false" ENUM="false" COMMENT="Ip of active user"                               PREVIOUS="userid"     NEXT="course"/>
+        <FIELD NAME="course"       TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Id of the active course"                         PREVIOUS="ip"         NEXT="cmid"/>
+        <FIELD NAME="cmid"         TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Id of the active course module"                  PREVIOUS="course"     NEXT="ilmid"/>
+        <FIELD NAME="ilmid"        TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="Id of the iLM "                                  PREVIOUS="cmid"       NEXT="action"/>
+        <FIELD NAME="action"       TYPE="char" LENGTH="255"    NOTNULL="true"                                 SEQUENCE="false" ENUM="false" COMMENT="Action of user in active course"                 PREVIOUS="ilmid"      NEXT="info"/>
+        <FIELD NAME="info"         TYPE="text" LENGTH="medium" NOTNULL="false"                                SEQUENCE="false"              COMMENT="The additional information of log"               PREVIOUS="action"     NEXT="language"/>
+        <FIELD NAME="language"     TYPE="char" LENGTH="10"     NOTNULL="true"                                 SEQUENCE="false" ENUM="false" COMMENT="The language code of active user"                PREVIOUS="info"       NEXT="user_agent"/>
+        <FIELD NAME="user_agent"   TYPE="char" LENGTH="255"    NOTNULL="true"                                 SEQUENCE="false" ENUM="false" COMMENT="User agent  of active user"                      PREVIOUS="language"   NEXT="javascript"/>
+        <FIELD NAME="javascript"   TYPE="int"  LENGTH="1"      NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="User agent allow Javascript ? 0 - no / 1 - yes"  PREVIOUS="user_agent" NEXT="java"/>
+        <FIELD NAME="java"         TYPE="int"  LENGTH="1"      NOTNULL="true"  UNSIGNED="true"  DEFAULT="0"   SEQUENCE="false" ENUM="false" COMMENT="User agent allow Java ? 0 - no / 1 - yes"        PREVIOUS="javascript"/>
+      </FIELDS>
+      <KEYS>
+        <KEY   NAME="primary" TYPE="primary" FIELDS="id" />
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course"  UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="iassign_statement" COMMENT="Info about interactive activities"  PREVIOUS="iassign_log" NEXT="iassign_submission">
+      <FIELDS>
+        <FIELD NAME="id"                       TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"              SEQUENCE="true"  ENUM="false" COMMENT="Primary key of table"                                                                             NEXT="name"/>
+        <FIELD NAME="name"                     TYPE="char" LENGTH="255"    NOTNULL="true"                               SEQUENCE="false" ENUM="false" COMMENT="Title of activity"                                                PREVIOUS="id"                   NEXT="iassignid"/>
+        <FIELD NAME="iassignid"                TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="id of the task in which the activity is inserted"                 PREVIOUS="name"                 NEXT="type_iassign"/>
+        <FIELD NAME="type_iassign"             TYPE="int"  LENGTH="2"      NOTNULL="true"  UNSIGNED="true"  DEFAULT="3" SEQUENCE="false" ENUM="false" COMMENT="Type of activity. 1 - example / 2 - test / 3 - exercise"          PREVIOUS="iassignid"            NEXT="proposition"/>
+        <FIELD NAME="proposition"              TYPE="text" LENGTH="medium" NOTNULL="false"                              SEQUENCE="false" ENUM="false" COMMENT="Proposition the activity"                                         PREVIOUS="type_iassign"         NEXT="author_name"/>
+        <FIELD NAME="author_name"              TYPE="char" LENGTH="255"    NOTNULL="true"                               SEQUENCE="false" ENUM="false" COMMENT="Author name the activity"                                         PREVIOUS="proposition"          NEXT="author_modified_name"/>
+        <FIELD NAME="author_modified_name"     TYPE="char" LENGTH="255"    NOTNULL="true"                               SEQUENCE="false" ENUM="false" COMMENT="Name of last author to modify the activity"                       PREVIOUS="author_name"          NEXT="iassign_ilmid"/>
+        <FIELD NAME="iassign_ilmid"            TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"              SEQUENCE="false" ENUM="false" COMMENT="iLM id used in the activity"                                      PREVIOUS="author_modified_name" NEXT="file"/>
+        <FIELD NAME="file"                     TYPE="char" LENGTH="255"    NOTNULL="false"                              SEQUENCE="false" ENUM="false" COMMENT="Address and file name of the activity"                            PREVIOUS="iassign_ilmid"        NEXT="grade"/>
+        <FIELD NAME="grade"                    TYPE="float"                NOTNULL="true"  UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Maximum score for activity"                                       PREVIOUS="file"                 NEXT="timemodified"/>
+        <FIELD NAME="timemodified"             TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Date of last modification"                                        PREVIOUS="grade"                NEXT="timecreated"/>
+        <FIELD NAME="timecreated"              TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Date of creation"                                                 PREVIOUS="timemodified"         NEXT="timeavailable"/>
+        <FIELD NAME="timeavailable"            TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Date of opening activity"                                         PREVIOUS="timecreated"          NEXT="timedue"/>
+        <FIELD NAME="timedue"                  TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Closing date of the activity"                                     PREVIOUS="timeavailable"        NEXT="preventlate"/>
+        <FIELD NAME="preventlate"              TYPE="int"  LENGTH="2"      NOTNULL="false" UNSIGNED="true"  DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Allow sending late? 0 - no / 1 - yes"                             PREVIOUS="timedue"              NEXT="test"/>
+        <FIELD NAME="test"                     TYPE="int"  LENGTH="1"      NOTNULL="false" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Activity to release test after closing time? 0 - no / 1 - yes"    PREVIOUS="preventlate"          NEXT="special_param1"/>
+        <FIELD NAME="special_param1"           TYPE="int"  LENGTH="1"      NOTNULL="false" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Activity contains algorithm? 0 - no / 1 - yes"                    PREVIOUS="test"                 NEXT="position" />
+        <FIELD NAME="position"                 TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Position of activity within the group"                            PREVIOUS="special_param1"       NEXT="visible"/>
+        <FIELD NAME="visible"                  TYPE="int"  LENGTH="1"      NOTNULL="false" UNSIGNED="true"  DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Status of viewing activity. 0 – hide / 1 - show"                  PREVIOUS="position"             NEXT="max_experiment"/>
+        <FIELD NAME="max_experiment"           TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Maximum number of attempts. 0 - unlimited"                        PREVIOUS="visible"              NEXT="dependency"/>
+        <FIELD NAME="dependency"               TYPE="char" LENGTH="255"    NOTNULL="true"  UNSIGNED="true"  DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="List the activities that this activity depends. 0 - independent"  PREVIOUS="max_experiment"       NEXT="automatic_evaluate"/>
+        <FIELD NAME="automatic_evaluate"       TYPE="int"  LENGTH="1"      NOTNULL="false" UNSIGNED="true"  DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Using automatic evaluation activity?0 - no / 1 - yes"             PREVIOUS="dependency"           NEXT="show_answer"/>
+        <FIELD NAME="show_answer"              TYPE="int"  LENGTH="1"      NOTNULL="false" UNSIGNED="true"  DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Show automatic evaluation results to students? 0 - no / 1 - yes"  PREVIOUS="automatic_evaluate" NEXT="store_all_submissions"/>
+        <FIELD NAME="store_all_submissions"            TYPE="int"  LENGTH="10"     NOTNULL="true"  UNSIGNED="true"   DEFAULT="0"  SEQUENCE="false" ENUM="false" COMMENT="If all submissions must be stored" PREVIOUS="show_answer" NEXT="filesid" />
+        <FIELD NAME="filesid"  TYPE="char" LENGTH="255"    NOTNULL="false"  SEQUENCE="false" ENUM="false" COMMENT="Address and file name of the activity"    PREVIOUS="store_all_submissions"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"       TYPE="primary" FIELDS="id" NEXT="iassignid"/>
+        <KEY NAME="iassignid"     TYPE="foreign" FIELDS="iassignid"     REFTABLE="iassign"     REFFIELDS="id" PREVIOUS="primary" NEXT="iassign_ilmid"/>
+        <KEY NAME="iassign_ilmid" TYPE="foreign" FIELDS="iassign_ilmid" REFTABLE="iassign_ilm" REFFIELDS="id" PREVIOUS="iassignid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="iassign_submission" COMMENT="Info about submissions of interactive activities" PREVIOUS="iassign_statement" NEXT="iassign_submission_comment">
+      <FIELDS>
+        <FIELD NAME="id"                  TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"              SEQUENCE="true"   ENUM="false" COMMENT="Primary key of table"                                                                                                              NEXT="iassign_statementid"/>
+        <FIELD NAME="iassign_statementid" TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id interactive activity"                                                                            PREVIOUS="id"                  NEXT="userid"/>
+        <FIELD NAME="userid"              TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id of submitting author"                                                                            PREVIOUS="iassign_statementid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated"         TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Date of first submission"                                                                           PREVIOUS="userid"              NEXT="timemodified"/>
+        <FIELD NAME="timemodified"        TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Date last modified"                                                                                 PREVIOUS="timecreated"         NEXT="grade"/>
+        <FIELD NAME="grade"               TYPE="float"             NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Grade of evaluation"                                                                                PREVIOUS="timemodified"        NEXT="previous_grade"/>
+        <FIELD NAME="previous_grade"      TYPE="float"             NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Previous grade of evaluation"                                                                       PREVIOUS="grade"               NEXT="teacher"/>
+        <FIELD NAME="teacher"             TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id teacher"                                                                                         PREVIOUS="previous_grade"               NEXT="answer"/>
+        <FIELD NAME="answer"              TYPE="text" LENGTH="big" NOTNULL="true"                              SEQUENCE="false"  ENUM="false" COMMENT="String with the last solution sent by the student"                                                  PREVIOUS="teacher"             NEXT="experiment"/>
+        <FIELD NAME="experiment"          TYPE="int"  LENGTH="1"   NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Total  of submissions"                                                                              PREVIOUS="answer"              NEXT="status"/>
+        <FIELD NAME="status"              TYPE="int"  LENGTH="1"   NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Status of activities. 0-not submitted/1-submitted/2-evaluated as incorrect/3-evaluated as correct"  PREVIOUS="experiment"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"             TYPE="primary" FIELDS="id" NEXT="iassign_statementid"/>
+        <KEY NAME="iassign_statementid" TYPE="foreign" FIELDS="iassign_statementid" REFTABLE="iassign_statement" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="iassign_submission_comment" COMMENT="Comments of interactive activities" PREVIOUS="iassign_submission" NEXT="iassign_security">
+      <FIELDS>
+        <FIELD NAME="id"                    TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true"             SEQUENCE="true"   ENUM="false" COMMENT="Primary key of table"                                                            NEXT="iassign_submissionid"/>
+        <FIELD NAME="iassign_submissionid"  TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id submission comment"                          PREVIOUS="id"                    NEXT="comment_authorid"/>
+        <FIELD NAME="comment_authorid"      TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id author comment"                              PREVIOUS="iassign_submissionid"  NEXT="timecreated"/>
+        <FIELD NAME="timecreated"           TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Date of sending the comment"                    PREVIOUS="comment_authorid"      NEXT="comment"/>
+        <FIELD NAME="comment"               TYPE="text" LENGTH="big"  NOTNULL="true"                             SEQUENCE="false"  ENUM="false" COMMENT="Comment"                                        PREVIOUS="timecreated"           NEXT="return_status"/>
+        <FIELD NAME="return_status"         TYPE="int"  LENGTH="1"    NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Status of return. 0 - unread / 1 -read"         PREVIOUS="comment"               NEXT="receiver"/>
+        <FIELD NAME="receiver"              TYPE="int"  LENGTH="1"    NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="1 - message to teacher. 2 - message to student" PREVIOUS="return_status"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"              TYPE="primary" FIELDS="id" NEXT="iassign_submissionid"/>
+        <KEY NAME="iassign_submissionid" TYPE="foreign" FIELDS="iassign_submissionid" REFTABLE="iassign_submission" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="iassign_security" COMMENT="Info about secure access to interactive activities" PREVIOUS="iassign_submission_comment" NEXT="iassign_allsubmissions">
+      <FIELDS>
+        <FIELD NAME="id"                  TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true"             SEQUENCE="true"  ENUM="false"  COMMENT="Primary key of table"                                                     NEXT="iassign_statementid"/>
+        <FIELD NAME="iassign_statementid" TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false"  COMMENT="id interactive activity"                   PREVIOUS="id"                  NEXT="userid"/>
+        <FIELD NAME="userid"              TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false"  COMMENT="id of submitting author"                   PREVIOUS="iassign_statementid" NEXT="file"/>
+        <FIELD NAME="file"                TYPE="text" LENGTH="big"  NOTNULL="true"                             SEQUENCE="false" ENUM="false"  COMMENT="Origin of activity sent"                   PREVIOUS="userid"              NEXT="timecreated"/>
+        <FIELD NAME="timecreated"         TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false"  COMMENT="Moment that the activity has been invoked" PREVIOUS="file"                NEXT="view"/>
+        <FIELD NAME="view"                TYPE="int"  LENGTH="10"   NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false"  COMMENT="Preview control flag of the iLM"           PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"      TYPE="primary" FIELDS="id" NEXT="iassign_statementid"/>
+        <KEY NAME="iassign_statementid" TYPE="foreign" FIELDS="iassign_statementid" REFTABLE="iassign_statement" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="iassign_allsubmissions" COMMENT="Stores all submissions from students" PREVIOUS="iassign_security">
+      <FIELDS>
+        <FIELD NAME="id"                  TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"              SEQUENCE="true"   ENUM="false" COMMENT="Primary key of table"                                                                                                              NEXT="iassign_statementid"/>
+        <FIELD NAME="iassign_statementid" TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id interactive activity"                                                                            PREVIOUS="id"                  NEXT="userid"/>
+        <FIELD NAME="userid"              TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="id of submitting author"                                                                            PREVIOUS="iassign_statementid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated"         TYPE="int"  LENGTH="10"  NOTNULL="true" UNSIGNED="true"  DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Date of first submission"                                                                           PREVIOUS="userid"              NEXT="grade"/>
+        <FIELD NAME="grade"               TYPE="float"             NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false"  ENUM="false" COMMENT="Grade of evaluation"                                                                                PREVIOUS="timecreated"        NEXT="answer"/>
+        <FIELD NAME="answer"              TYPE="text" LENGTH="big" NOTNULL="true"                              SEQUENCE="false"  ENUM="false" COMMENT="String with the solution sent by the student"                                                  PREVIOUS="grade" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"      TYPE="primary" FIELDS="id" NEXT="iassign_statementid"/>
+        <KEY NAME="iassign_statementid" TYPE="foreign" FIELDS="iassign_statementid" REFTABLE="iassign_statement" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

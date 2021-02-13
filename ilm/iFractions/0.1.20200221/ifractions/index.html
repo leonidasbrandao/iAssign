@@ -1,0 +1,741 @@
+<!DOCTYPE html>  
+<html>
+    <head>  
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title> iFractions </title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css"  href="css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css"  href="css/jquery.modal.min.css">
+        <script type="text/javascript" src="js/phaser.min.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/jquery.modal.min.js"></script>
+        <script type="text/javascript" src="js/boot.js"></script>
+        <script type="text/javascript" src="js/menu.js"></script>
+        <script type="text/javascript" src="js/circleOne.js"></script>
+        <script type="text/javascript" src="js/squareOne.js"></script>
+        <script type="text/javascript" src="js/squareTwo.js"></script>
+
+        <script>
+            function getParameterByName(name) {
+                var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+                return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : null;
+            }
+            function getAnswer() {
+                if (iLMparameters.iLM_PARAM_SendAnswer == 'false') {
+                    var str = "{"
+                            + '"shape": "' + jogo.shape
+                            + '", "modo": "' + jogo.modo
+                            + '", "label": "' + jogo.label
+                            + '", "operator": "' + jogo.operator
+                            + '", "difficulty": "' + jogo.difficulty
+                            + '", "num": "' + jogo.num
+                            + '", "results": {';
+                    for (j = 0; j < iterator; j++) {
+                        str += '"' + (j + 1) + '": { "phase": "' + (j + 1)
+                                + '", "hits": "' + hits[j]
+                                + '", "errors": "' + errors[j]
+                                + '", "start": "' + start[j]
+                                + '", "end": "' + end[j]
+                                + '" }' + ((j + 1 < iterator) ? "," : "");
+                    }
+                    str += "}}";
+                    return str;
+                } else {
+                    console.log("getAnswer:: called");
+                    if (modulo < 1) {
+                        alert(words.error_module);
+                        return x;
+                    }
+                    if (difficulty < 1) {
+                        alert(words.error_difficulty);
+                        return x;
+                    }
+                    if (num < 5) {
+                        return '{'
+                                + '"shape": "' + (modules_names[modulo].split(",")[0] === words.square_name ? "Square" : "Circle")
+                                + '", "modo": "' + modos[modulo]
+                                + '", "label": "' + labels[modulo]
+                                + '", "operator": "' + (operation == 1 ? "Plus" : (operation == 2 ? "Minus" : (operation == 3 ? "Mixed" : "Equals")))
+                                + '", "difficulty": "' + difficulty
+                                + '", "num": "' + num
+                                + '"}';
+                    } else {
+                        return '{'
+                                + '"shape": "' + (modules_names[modulo].split(",")[0] === words.square_name ? "Square" : "Circle")
+                                + '", "modo": "' + (operation == 1 ? "A" : (operation == 2 ? "B" : "C"))
+                                + '", "label": "' + labels[modulo]
+                                + '", "operator": "' + (operation == 1 ? "Plus" : (operation == 2 ? "Minus" : (operation == 3 ? "Mixed" : "Equals")))
+                                + '", "difficulty": "' + difficulty
+                                + '", "num": "' + num
+                                + '"}';
+                    }
+                }
+            }
+            function getEvaluation() {
+                console.log("getEvaluation:: called");
+                getEvaluationCallback(1); // verificar com o professor:: uma fórmula para compor a nota do aluno
+            }
+            function getEvaluationCallback(nota) {
+                console.log("getEvaluationCallback:: called");
+                if (iLMparameters.iLM_PARAM_SendAnswer == 'false') {
+                    parent.getEvaluationCallback(nota);
+                }
+            }
+            var iLMparameters = {
+                iLM_PARAM_ServerToGetAnswerURL: getParameterByName("iLM_PARAM_ServerToGetAnswerURL"),
+                iLM_PARAM_SendAnswer: getParameterByName("iLM_PARAM_SendAnswer"),
+                iLM_PARAM_AssignmentURL: getParameterByName("iLM_PARAM_AssignmentURL"),
+                iLM_PARAM_Assignment: getParameterByName("iLM_PARAM_Assignment"),
+                lang: getParameterByName("lang")
+            };
+            function trackAction(action) {
+                $.post(iLMparameters.iLM_PARAM_ServerToGetAnswerURL + "&track=1", {trackingData: "html=1;" + action}, function (d) {});
+            }
+        </script>
+        <style>
+            .input-hidden {
+                position: absolute;
+                left: -9999px;
+            }
+
+            input[type=radio]:checked + label>img {
+                border: 1px solid #fff;
+                box-shadow: 0 0 3px 3px #090;
+                filter: grayscale(0%);
+            }
+
+            input[type=radio] + label>img {
+                width: 80px;
+                height: 80px;
+                margin-left: 5px;
+                filter: grayscale(100%);
+                transition: 500ms all;
+            }
+            #form-create img:hover {
+                filter: grayscale(0%);
+            }
+            #select_module, #select_difficulty, #options_summary_title {
+                text-align: left;
+                padding: 15px;
+            }
+            #options_module, #options_diff {
+                text-align: left;
+                padding-left: 40px;
+            }
+            .img_difficulty {
+                width: 80px !important;
+                margin-right: 20px;
+                margin-top: 20px;
+            }
+            #results-title {
+                font-size: 140%;
+                border-bottom: 2px solid #c9d1dd;
+                padding-bottom: 5px;
+            }
+            #results-image, #results-info {
+                float: left;
+                margin-top: 10px;
+            }
+            #results-image img {
+                width: 80px;
+                height: 80px;
+            }
+            #results-info {
+                margin-left: 15px;
+                margin-top: 20px;
+                font-size: 120%;
+            }
+            #bl {
+                width: 100%; 
+                height: 105px;
+                border-bottom: 2px solid #c9d1dd;
+            }
+            .results-levels {
+                border-bottom: 2px solid #c9d1dd;
+                padding: 10px;
+            }
+            .results-levels img {
+                width: 60px;
+            }
+            .numphase {
+                float: left;
+                margin-top: -50px;
+                margin-left: 25px;
+                position: absolute;
+                z-index: 9999;
+                color: white;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .panel-body, .panel-primary {
+                padding: 0;
+                border: none;
+                height: auto;
+                width: auto;
+                margin: 0;
+            }
+            .results-levels-item {
+                margin-top: -70px;
+                margin-left: 75px;
+            }
+            .container {    
+                width: auto;
+                padding: 0;
+                margin: 0;
+            }
+            .close-modal {
+                margin: 10px;
+            }
+            .modal-title {
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .modal-geral {
+                font-size: 16px;
+                margin: 10px;
+            }
+            .modal-coop {
+                padding: 5px;
+                border: 1px solid #4286f4;
+                background-color: #c5d9f9;
+                border-radius: 10px 10px 0 0;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+            .modal-coop-content {
+                border: 1px solid #4286f4;
+                margin-top: -1px;
+                padding: 5px;
+                border-radius: 0 0 10px 10px;
+            }
+            .modal-based {
+                padding: 5px;
+                border: 1px solid #ff5e5e;
+                background-color: #f9dbdb;
+                border-radius: 10px 10px 0 0;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+            .modal-based-content {
+                border: 1px solid #ff5e5e;
+                margin-top: -1px;
+                padding: 5px;
+                border-radius: 0 0 10px 10px;
+            }
+            .modal-tech {
+                padding: 5px;
+                border: 1px solid #109b0d;
+                background-color: #b6ffb5;
+                border-radius: 10px 10px 0 0;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+            .modal-tech-content {
+                border: 1px solid #109b0d;
+                margin-top: -1px;
+                padding: 5px;
+                border-radius: 0 0 10px 10px;
+            }
+            .results-levels:hover {
+                background: #f5f5f5;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <div class="container">
+            <div class="clearfix"></div>
+            <div class="panel panel-primary">
+                <!--<div class="panel-heading">FRACTIONS GAME</div>-->
+                <div class="panel-body">
+                    <center>
+                        <div id="fractions-game" style="padding: 0 auto 0 auto;">
+                            <div id="form-create" style="display: none;">
+                                <script>
+                                    // 
+                                    var words = [];
+                                    var modules_names = [''];
+                                    var total_levels = [0, 2, 2, 3, 3, 3, 2, 2, 3, 3];
+                                    var levels = [0, 3, 3, 5, 5, 5, 3, 3, 5, 5];
+                                    var modos = ['', 'A', 'A', 'A', 'A', 'C', 'B', 'B', 'B', 'B'];
+                                    var labels = [false, true, false, true, false, false, true, false, true, false];
+                                    var operation_img = [''];
+                                    var operation;
+                                    var difficulty = 0;
+                                    var modulo = 0;
+                                    var num;
+                                    var redir = true;
+
+                                    var url_lang;
+                                    if (iLMparameters.lang == "en")
+                                        url_lang = "en_US";
+                                    if (iLMparameters.lang == "pt")
+                                        url_lang = "pt_BR";
+                                    if (iLMparameters.lang == "fr")
+                                        url_lang = "fr_FR";
+                                    if (iLMparameters.lang == "es")
+                                        url_lang = "es_PE";
+
+                                    $.getJSON("resource/lang/" + url_lang + ".json", function (data) {
+                                        $.each(data, function (key, val) {
+                                            words[key] = val;
+                                        });
+                                        $("#select_module").html(words.select_module + ":");
+                                        $("#select_difficulty").html(words.select_operation + ":");
+                                        $("#options_summary_title").html(words.options_summary + ":");
+                                        $("#options_module").html(words.options_module + ":");
+                                        $("#options_diff").html(words.options_difficulty + ":");
+
+                                        modules_names[1] = words.square_name + ", " + words.mode_name + " A, " + words.with_name + " " + words.label_name;
+                                        modules_names[2] = words.square_name + ", " + words.mode_name + " A, " + words.without_name + " " + words.label_name;
+                                        modules_names[3] = words.circle_name + ", " + words.mode_name + " A, " + words.with_name + " " + words.label_name;
+                                        modules_names[4] = words.circle_name + ", " + words.mode_name + " A, " + words.without_name + " " + words.label_name;
+                                        modules_names[5] = words.square_name + ", " + words.mode_name + " C, " + words.without_name + " " + words.label_name;
+                                        modules_names[6] = words.square_name + ", " + words.mode_name + " B, " + words.with_name + " " + words.label_name;
+                                        modules_names[7] = words.square_name + ", " + words.mode_name + " B, " + words.without_name + " " + words.label_name;
+                                        modules_names[8] = words.circle_name + ", " + words.mode_name + " B, " + words.with_name + " " + words.label_name;
+                                        modules_names[9] = words.circle_name + ", " + words.mode_name + " B, " + words.without_name + " " + words.label_name;
+
+                                        for (i = 1; i < modules_names.length; i++) {
+                                            $("#img_" + i).attr("title", modules_names[i]);
+                                        }
+
+                                        operation_img[1] = "help/arrow.png,help/arrow_2.png";
+                                        operation_img[2] = "help/arrow.png,help/arrow_2.png";
+                                        operation_img[3] = "help/arrow.png,help/arrow_2.png,help/double.png";
+                                        operation_img[4] = "help/arrow.png,help/arrow_2.png,help/double.png";
+                                        operation_img[5] = ",operator/equal.png,";
+                                        operation_img[6] = "help/arrow.png,help/arrow_2.png";
+                                        operation_img[7] = "help/arrow.png,help/arrow_2.png";
+                                        operation_img[8] = "help/arrow.png,help/arrow_2.png,help/double.png";
+                                        operation_img[9] = "help/arrow.png,help/arrow_2.png,help/double.png";
+
+                                    });
+
+                                    $(function () {
+                                        $(document).tooltip();
+                                    });
+
+                                    function show_operation_and_difficulty(opt) {
+
+                                        difficulty = 0;
+                                        $("#div_difficulty").css("display", "block");
+                                        $("#div_summary").css("display", "none");
+                                        $("#options_module").html(words.options_module + ":");
+                                        $("#options_diff").html(words.options_difficulty + ":");
+
+                                        modulo = parseInt(opt.value);
+                                        num = (modulo == 1 ? 1 : (modulo == 2 ? 2 : (modulo == 3 ? 1 : (modulo == 4 ? 2 : (modulo == 5 ? 5 : (modulo == 6 ? 3 : (modulo == 7 ? 4 : (modulo == 8 ? 3 : 4))))))));
+                                        var i;
+                                        var divs = "";
+                                        var id = 1;
+                                        for (i = 0; i < total_levels[modulo]; i++) {
+                                            var j;
+                                            divs += "<div style='margin-bottom: 20px;'>";
+                                            if (operation_img[modulo].split(",")[i] !== '') {
+                                                divs += "<img class='img_difficulty' src='resource/img/global/" + operation_img[modulo].split(",")[i] + "'>";
+                                            } else {
+                                                divs += "<div class='img_difficulty' style='display:inline;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>";
+                                            }
+
+                                            for (j = 0; j < levels[modulo]; j++) {
+                                                divs += "<input type='radio' name='difficulty' id='diff_" + id + "' class='input-hidden' value='" + i + "," + j + "' onchange='change_operation_and_difficulty(" + (i + 1) + "," + (j + 1) + ")' /> <label for='diff_" + id + "'> <img src='resource/img/global/dot.png' style='height: " + ((j + 1) * 20) + "px; width: 30px; margin-bottom: -" + (((levels[modulo] + 1) * 20) - ((j + 1) * 20)) + "px;' /> </label>";
+                                                id++;
+                                            }
+                                            divs += "</div>";
+                                        }
+                                        $("#options_difficulty").html(divs);
+                                        $("#options_module").html(words.options_module + ": " + modules_names[modulo]);
+                                    }
+
+                                    function change_operation_and_difficulty(op, dif) {
+                                        $("#div_summary").css("display", "block");
+                                        operation = parseInt(op);
+                                        difficulty = parseInt(dif);
+                                        var op_text = "";
+                                        switch (operation) {
+                                            case 1:
+                                                op_text = words.options_plus;
+                                                break;
+                                            case 2:
+                                                op_text = words.options_minus;
+                                                break;
+                                            case 3:
+                                                op_text = words.options_mixed;
+                                                break;
+                                            case 4:
+                                                op_text = words.options_equals;
+                                                break;
+                                        }
+                                        $("#options_diff").html(words.options_difficulty + ": " + op_text + ", " + difficulty);
+                                    }
+
+                                </script>
+
+                                <div id="select_module"></div>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in1" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="1" />
+                                <label for="in1">
+                                    <img id="img_1" src="resource/img/global/game/one-s.png" title=""  />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in2" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="2" />
+                                <label for="in2">
+                                    <img id="img_2" src="resource/img/global/game/two-s.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in3" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="3" />
+                                <label for="in3">
+                                    <img id="img_3" src="resource/img/global/game/one-c.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in4" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="4" />
+                                <label for="in4">
+                                    <img id="img_4" src="resource/img/global/game/two-c.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in5" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="5" />
+                                <label for="in5">
+                                    <img id="img_5" src="resource/img/global/game/five-s.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in6" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="6" />
+                                <label for="in6">
+                                    <img id="img_6" src="resource/img/global/game/three-s.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in7" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="7" />
+                                <label for="in7">
+                                    <img id="img_7" src="resource/img/global/game/four-s.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in8" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="8" />
+                                <label for="in8">
+                                    <img id="img_8" src="resource/img/global/game/three-c.png" title="" />
+                                </label>
+
+                                <input 
+                                    type="radio" name="emotion"
+                                    id="in9" class="input-hidden" onchange="show_operation_and_difficulty(this)" value="9" />
+                                <label for="in9">
+                                    <img id="img_9" src="resource/img/global/game/four-c.png" title="" />
+                                </label>
+
+                                <div id="div_difficulty" style="display:none;">
+                                    <div id="select_difficulty"></div>
+                                    <div id="options_difficulty"></div>
+                                </div>
+
+                                <div id="div_summary" style="display:none;">
+                                    <div id="options_summary_title"></div>
+                                    <div id="options_summary_text">
+                                        <div id="options_module"></div>
+                                        <div id="options_diff"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </center>
+
+                    <div id="results" style="display: none;">
+                        <div id="results-title"></div>
+                        <div id="bl">
+                            <div id="results-image"></div>
+                            <div id="results-info"></div>
+                        </div>
+                        <div id="results-details"></div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="panel panel-info">
+                <div class="panel-heading">COOPERATION TEAM</div>
+                <div class="panel-body">
+                    <center>
+                        <ul>
+                            <li><strong>BRAZIL:</strong> Le&ocirc;nidas de Oliveira Brand&atilde;o (IME-USP)</li>
+                            <li><strong>PERU:</strong> Manuel Ibarra and Cristhian Serrano (EAPIIS-UNAMBA)</li>
+                            <li><strong>FRANCE:</strong> Jean-Marc (MOCAH-UPMC)</li>
+                        </ul>
+                    </center>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">BASED ON</div>
+                <div class="panel-body">
+                    <center>
+                        <ul>
+                            <li><strong>iLM </strong>(interactive Learning Modules) </li>
+                            <li><strong>Six facets of Serious Game Design</strong>:<br>
+                                Pedagogical Objectives; Domain Simulation; Interactions with the Simulation; Problems and Progression; Decorum and Conditions of Use.
+                            </li>
+                        </ul>
+                    </center>
+                </div>
+            </div>
+            <div class="panel panel-danger">
+                <div class="panel-heading">TECHNOLOGY</div>
+                <div class="panel-body">
+                    <center>
+                        <ul>
+                            <li> We used <strong>HTML5</strong>, <strong>CSS</strong> and the <strong>Javascript</strong> Library <a href="http://phaser.io/" target="_blank"><strong>Phaser.io</strong></a> </li>
+                        </ul>
+                    </center>
+                </div>
+            </div>
+            -->
+        </div>
+
+    </body>
+
+
+
+    <script type="text/javascript">
+        // If SendAnswer (student) ::Igor
+        if (iLMparameters.iLM_PARAM_SendAnswer == 'false') {
+            // Initialize the game
+            var game = new Phaser.Game(900, 600, Phaser.CANVAS, 'fractions-game');
+            hip = "143.107.45.11"; //Host ip
+            /*name = ""; //player name*/
+            lang = ""; //language
+            var timer, totalTime;
+            // Game One 
+            onePosition = 0; //Map position
+            oneMove = false; //Move to next position
+            oneDifficulty = 0; //From one to five 
+            oneOperator = ""; //Plus; Minus; Mixed
+            oneLabel = false; //Show block label
+            oneShape = ""; //Circle; square
+            oneType = ""; // A - Place distance; B - Select blocks
+            oneMenu = true;
+            // Game Two
+            twoPosition = 0; //Map position
+            twoMove = false; //Move to next position
+            twoDifficulty = 0; //From one to five 
+            twoOperator = ""; //Plus; Minus; Mixed
+            twoLabel = false; //Show block label
+            twoShape = ""; //Circle; square
+            twoType = ""; // A - Normal position; B - Random position
+            twoMenu = true;
+            //adding game states (scenes)
+            game.state.add('boot', bootState);
+            game.state.add('load', loadState);
+            game.state.add('name', nameState);
+            game.state.add('menu', menuState);
+            game.state.add('menuCOne', menuCircleOne);
+            game.state.add('mapCOne', mapCircleOne);
+            game.state.add('gameCOne', gameCircleOne);
+            game.state.add('endCOne', endCircleOne);
+            game.state.add('menuSOne', menuSquareOne);
+            game.state.add('mapSOne', mapSquareOne);
+            game.state.add('gameSOne', gameSquareOne);
+            game.state.add('endSOne', endSquareOne);
+            game.state.add('menuSTwo', menuSquareTwo);
+            game.state.add('mapSTwo', mapSquareTwo);
+            game.state.add('gameSTwo', gameSquareTwo);
+            game.state.add('endSTwo', endSquareTwo);
+
+            lang = url_lang;
+
+            var jogo = [];
+            $.get(iLMparameters.iLM_PARAM_Assignment, function (d) {
+                if (d != null) {
+                    $.each(d, function (key, val) {
+                        jogo[key] = val;
+                    });
+                    register_start();
+                    if (jogo.hasOwnProperty('results')) {
+                        $("#fractions-game").css("display", "none");
+                        $("#results").css("display", "block");
+
+                        var results = [];
+                        $.each(jogo.results, function (key, val) {
+                            results[key] = val;
+                        });
+
+                        $("#results-title").html(words.results_title);
+                        $("#results-info").html(words.results_operation + ": " + jogo.operator + "<br>" + words.results_difficulty + ": " + jogo.difficulty);
+
+                        var dd = "";
+                        for (i = 1; i < results.length; i++) {
+                            dd += "<div class='results-levels'> <img src='resource/img/en_US/sign.png'><div class='numphase'>" + i + "</div> ";
+
+                            dd += "<div class='results-levels-item'>" + words.results_start + ": " + timeConverter(results[i].start);
+                            dd += " " + words.results_end + ": " + timeConverter(results[i].end);
+
+                            errors[i - 1] = results[i].errors;
+                            hits[i - 1] = results[i].hits;
+                            start[i - 1] = results[i].start;
+                            end[i - 1] = results[i].end;
+                            iterator++;
+
+                            var temp = results[i].end - results[i].start;
+                            dd += "<br>" + words.results_time + ": " + ("" + temp + "").toHHMMSS();
+                            dd += "<br>" + words.results_hits + ": " + results[i].hits;
+                            dd += "<br>" + words.results_errors + ": " + results[i].errors;
+                            //dd += "<br>" + words.results_grade + ": ";
+                            dd += "</div></div>";
+                        }
+                        $("#results-details").html(dd);
+                        var icone = "";
+                        if (jogo.shape == "Square") {
+                            if (jogo.modo == "A") {
+                                if (jogo.label == true) {
+                                    icone = "one-s.png";
+                                } else {
+                                    icone = "two-s.png";
+                                }
+                            }
+                            if (jogo.modo == "B") {
+                                if (jogo.label == true) {
+                                    icone = "three-s.png";
+                                } else {
+                                    icone = "four-s.png";
+                                }
+                            }
+                            if (jogo.modo == "C") {
+                                icone = "five-s.png";
+                            }
+                        } else {
+                            if (jogo.modo == "A") {
+                                if (jogo.label == true) {
+                                    icone = "one-c.png";
+                                } else {
+                                    icone = "two-c.png";
+                                }
+                            }
+                            if (jogo.modo == "B") {
+                                if (jogo.label == true) {
+                                    icone = "three-c.png";
+                                } else {
+                                    icone = "four-c.png";
+                                }
+                            }
+                        }
+
+                        $("#results-image").html("<img src='resource/img/global/game/" + icone + "'>");
+
+                    } else {
+                        //starting to boot game
+                        game.state.start('boot');
+                    }
+                } else
+                    alert('Erro: nao consegui ler o conteudo de ' + iLMparameters.iLM_PARAM_Assignment);
+            }, "json");
+
+            var conta = true;
+            var iterator = 0;
+            var hits = [0, 0, 0, 0];
+            var errors = [0, 0, 0, 0];
+            var start = [0, 0, 0, 0];
+            var end = [0, 0, 0, 0];
+
+        } else { // If Not SendAnswer (teacher) ::Igor
+            $("#form-create").css("display", "block");
+        }
+
+        function sendResults(final) {
+            var str = "{"
+                    + '"shape": "' + jogo.shape
+                    + '", "modo": "' + jogo.modo
+                    + '", "label": "' + jogo.label
+                    + '", "operator": "' + jogo.operator
+                    + '", "difficulty": "' + jogo.difficulty
+                    + '", "num": "' + jogo.num
+                    + '", "results": {';
+            for (j = 0; j < iterator; j++) {
+                str += '"' + (j + 1) + '": { "phase": "' + (j + 1)
+                        + '", "hits": "' + hits[j]
+                        + '", "errors": "' + errors[j]
+                        + '", "start": "' + start[j]
+                        + '", "end": "' + end[j]
+                        + '" }' + ((j + 1 < iterator) ? "," : "");
+            }
+            str += "}}";
+            console.log(str);
+            $.post(iLMparameters.iLM_PARAM_ServerToGetAnswerURL, {return_get_answer: 1, iLM_PARAM_ActivityEvaluation: final, iLM_PARAM_ArchiveContent: str}, function (d) {});
+        }
+
+        function register_start() {
+            var str = "{"
+                    + '"shape": "' + jogo.shape
+                    + '", "modo": "' + jogo.modo
+                    + '", "label": "' + jogo.label
+                    + '", "operator": "' + jogo.operator
+                    + '", "difficulty": "' + jogo.difficulty
+                    + '", "num": "' + jogo.num
+                    + '"';
+            str += "}";
+            $.post(iLMparameters.iLM_PARAM_ServerToGetAnswerURL, {iLM_PARAM_ActivityEvaluation: 0, iLM_PARAM_ArchiveContent: str}, function (d) {});
+        }
+
+        function finish_redirect() {
+            parent.location.reload(true);
+        }
+
+        function timeConverter(UNIX_timestamp) {
+            var a = new Date(UNIX_timestamp * 1000);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var year = a.getFullYear();
+            var month = months[a.getMonth()];
+            var date = a.getDate();
+            var hour = a.getHours();
+            var min = a.getMinutes();
+            var sec = a.getSeconds();
+            var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+            return time;
+        }
+
+        String.prototype.toHHMMSS = function () {
+            var sec_num = parseInt(this, 10); // don't forget the second param
+            var hours = Math.floor(sec_num / 3600);
+            var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            return hours + ':' + minutes + ':' + seconds;
+        }
+        function getParameterFromParent(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(parent.document.location.search);
+            return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : null;
+        }
+        function showInfo() {
+            var html = "<div class='modal-geral'> <div class='modal-title'>iFractions</div>"
+                    + "<div class='modal-coop'>Cooperation Team</div> <div class='modal-coop-content'> BRAZIL: Leônidas de Oliveira Brandão (IME-USP)<br>"
+                    + "PERU: Manuel Ibarra and Cristhian Serrano (EAPIIS-UNAMBA)<br> FRANCE: Jean-Marc (MOCAH-UPMC) </div>"
+                    + "<div class='modal-based'>Based on</div><div class='modal-based-content'> iLM (interactive Learning Modules)<br>"
+                    + "Six facets of Serious Game Design:<br>Pedagogical Objectives; Domain Simulation; Interactions with the Simulation; Problems and Progression; Decorum and Conditions of Use."
+                    + "</div> <div class='modal-tech'> Technology </div> <div class='modal-tech-content'> We used HTML5, CSS and the Javascript Library Phaser.io </div> </div>";
+            $(html).appendTo('body').modal();
+        }
+
+    </script>
+</html>
